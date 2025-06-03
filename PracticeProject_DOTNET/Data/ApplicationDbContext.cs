@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using PracticeProject_DOTNET.Models;
 
 namespace PracticeProject_DOTNET.Data
 {
@@ -8,5 +9,7 @@ namespace PracticeProject_DOTNET.Data
         {
             
         }
+
+        public DbSet<Category> Categories { get; set; }
     }
 }
