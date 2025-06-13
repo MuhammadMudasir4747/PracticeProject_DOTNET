@@ -1,6 +1,16 @@
 ﻿@model List<Category>
 
-    <div class="container">
+
+@if (TempData["success"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show mt-3" role="alert">
+        @TempData["success"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+
+<div class="container">
 
         <div class="row">
 
@@ -24,16 +34,18 @@
                         <tr>
                             <td>@obj.Name</td>
                             <td>@obj.DisplayOrder</td>
-                            <td> 
+                            <td>
                                 <div class="w-75 btn-group" role="group">
                                     <a asp-controller="Category" asp-action="Edit" asp-route-id="@obj.Id" class="btn btn-primary mx-2">
                                         <i class="bi bi-pen"></i>
                                     </a>
 
-
-                                    <a asp-controller="Category" asp-action="Delete" class="btn- btn-primary mx-2"> <i class="bi bi-trash"></i></a>
+                                    <a asp-controller="Category" asp-action="Delete" asp-route-id="@obj.Id" class="btn btn-danger mx-2">
+                                        <i class="bi bi-trash"></i>
+                                    </a>
                                 </div>
                             </td>
+
                         </tr>
                     }
                 </tbody>

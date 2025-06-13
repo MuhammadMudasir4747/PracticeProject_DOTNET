@@ -29,6 +29,7 @@ namespace PracticeProject_DOTNET.Controllers
             if (ModelState.IsValid) { 
             _db.Categories.Add(obj);
             _db.SaveChanges();
+            TempData["success"] = "Category Created Successfully";
             }
             return RedirectToAction("Index", "Category");
         }
@@ -60,10 +61,27 @@ namespace PracticeProject_DOTNET.Controllers
             {
                 _db.Categories.Update(category);
                 _db.SaveChanges();
+                TempData["success"] = "Category updated Successfully";
                 return RedirectToAction("Index", "Category");
+
+                
             }
 
-            return View(category); // show validation messages
+            //return View(category); // show validation messages
+            return RedirectToAction("Index", "Category");
+        }
+
+        //Delete method
+        public IActionResult Delete(int? id)
+        {
+            if(id==null || id == 0){ return NotFound();}
+            var catagories_received = _db.Categories.FirstOrDefault(u => u.Id == id);
+            if(catagories_received == null) { return NotFound(); }
+            //return View(catagories_received);
+            _db.Categories.Remove(catagories_received);
+            _db.SaveChanges();
+            TempData["success"] = "Category deleted Successfully";
+            return RedirectToAction("Index", "Category");
         }
     }
 }
