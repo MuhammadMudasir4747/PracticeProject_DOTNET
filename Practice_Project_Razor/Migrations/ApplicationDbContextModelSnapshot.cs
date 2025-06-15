@@ -2,20 +2,17 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Practice_DOTNET_RAZOR_TEMP.Data;
+using Practice_Project_Razor.Data;
 
 #nullable disable
 
-namespace Practice_DOTNET_RAZOR_TEMP.Migrations
+namespace Practice_Project_Razor.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250615145138_InitialCreate")]
-    partial class InitialCreate
+    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
     {
-        /// <inheritdoc />
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -24,7 +21,7 @@ namespace Practice_DOTNET_RAZOR_TEMP.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("Practice_DOTNET_RAZOR_TEMP.Models.Category", b =>
+            modelBuilder.Entity("Practice_Project_Razor.Models.Category", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()

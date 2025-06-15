@@ -7,7 +7,7 @@
 namespace Practice_DOTNET_RAZOR_TEMP.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class AddCategoryToDb : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
