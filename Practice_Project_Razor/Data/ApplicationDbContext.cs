@@ -21,5 +21,10 @@ namespace Practice_Project_Razor.Data
 
                 );
         }
+
+        internal async Task<Category> FindAsync(object id)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
