@@ -1,6 +1,6 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
-using PracticeProject_DOTNET.Models;
+using PracticeProject.Models;
 
 namespace PracticeProject_DOTNET.Controllers
 {

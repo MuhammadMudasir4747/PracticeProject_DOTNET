@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
-using PracticeProject_DOTNET.Data;
+using PracticeProject_DOTNET.DataAccess;
+using PracticeProject_DOTNET.DataAccess.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 

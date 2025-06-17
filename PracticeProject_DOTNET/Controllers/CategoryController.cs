@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using PracticeProject_DOTNET.Data;
-using PracticeProject_DOTNET.Models;
+using PracticeProject.Models;
+using PracticeProject_DOTNET.DataAccess.Data;
 
 namespace PracticeProject_DOTNET.Controllers
 {
