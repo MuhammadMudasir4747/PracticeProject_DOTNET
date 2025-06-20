@@ -4,13 +4,14 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using PracticeProject.DataAccess.Repository.IRepository;
 using PracticeProject_DOTNET.DataAccess.Data;
 
 #nullable disable
 
 namespace PracticeProject.DataAccess.Migrations
 {
-    [DbContext(typeof(ApplicationDbContext))]
+    [DbContext(typeof(ICategoryRespository))]
     [Migration("20250617203520_InitialDatabaseSetup")]
     partial class InitialDatabaseSetup
     {

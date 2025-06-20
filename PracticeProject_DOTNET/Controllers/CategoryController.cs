@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using PracticeProject.DataAccess.Repository.IRepository;
 using PracticeProject.Models;
 using PracticeProject_DOTNET.DataAccess.Data;
 
@@ -7,15 +8,15 @@ namespace PracticeProject_DOTNET.Controllers
     public class CategoryController : Controller
     {
 
-        public readonly ApplicationDbContext _db;
-        public CategoryController(ApplicationDbContext db)
+        public readonly ICategoryRespository _categoryRepo;
+        public CategoryController(ICategoryRespository db)
         {
-            _db = db;
+            _categoryRepo = db;
         }
 
         public IActionResult Index()
         {
-            List<Category> objCategoryList = _db.Categories.ToList();
+            List<Category> objCategoryList = _categoryRepo.GetAll().ToList();
             return View(objCategoryList);
         }
         public IActionResult Create()
@@ -27,8 +28,8 @@ namespace PracticeProject_DOTNET.Controllers
         public IActionResult Create(Category obj)
             {
             if (ModelState.IsValid) { 
-            _db.Categories.Add(obj);
-            _db.SaveChanges();
+            _categoryRepo.Add(obj);
+                _categoryRepo.Save();
             TempData["success"] = "Category Created  Successfully";
             }
             return RedirectToAction("Index", "Category");
@@ -43,7 +44,7 @@ namespace PracticeProject_DOTNET.Controllers
                 return NotFound();
             }
 
-            var CategoryfromDb = _db.Categories.FirstOrDefault(c => c.Id == id);
+            var CategoryfromDb = _categoryRepo.Get(c => c.Id == id);
 
             if(CategoryfromDb == null) {
                 return NotFound();    
@@ -59,8 +60,8 @@ namespace PracticeProject_DOTNET.Controllers
         {
             if (ModelState.IsValid)
             {
-                _db.Categories.Update(category);
-                _db.SaveChanges();
+                _categoryRepo.Update(category);
+                _categoryRepo.Save();
                 TempData["success"] = "Category updated Successfully";
                 return RedirectToAction("Index", "Category");
 
@@ -75,11 +76,11 @@ namespace PracticeProject_DOTNET.Controllers
         public IActionResult Delete(int? id)
         {
             if(id==null || id == 0){ return NotFound();}
-            var catagories_received = _db.Categories.FirstOrDefault(u => u.Id == id);
-            if(catagories_received == null) { return NotFound(); }
+            var catagories_received = _categoryRepo.Get(c => c.Id == id);
+            if (catagories_received == null) { return NotFound(); }
             //return View(catagories_received);
-            _db.Categories.Remove(catagories_received);
-            _db.SaveChanges();
+            _categoryRepo.Remove(catagories_received);
+            _categoryRepo.Save();
             TempData["success"] = "Category deleted Successfully";
             return RedirectToAction("Index", "Category");
         }

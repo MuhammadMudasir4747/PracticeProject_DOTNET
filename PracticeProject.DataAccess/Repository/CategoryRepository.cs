@@ -26,5 +26,7 @@ namespace PracticeProject.DataAccess.Repository
         {
            _db.Categories.Update(obj);
         }
+
+    
     }
 }

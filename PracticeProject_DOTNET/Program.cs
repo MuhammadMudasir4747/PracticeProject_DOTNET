@@ -1,4 +1,6 @@
 using Microsoft.EntityFrameworkCore;
+using PracticeProject.DataAccess.Repository;
+using PracticeProject.DataAccess.Repository.IRepository;
 using PracticeProject_DOTNET.DataAccess;
 using PracticeProject_DOTNET.DataAccess.Data;
 
@@ -11,6 +13,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(
     options=> options.
     UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+builder.Services.AddScoped<ICategoryRespository, CategoryRepository>();
 
 
 var app = builder.Build();
