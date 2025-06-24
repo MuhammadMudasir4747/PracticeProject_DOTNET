@@ -3,8 +3,9 @@ using PracticeProject.DataAccess.Repository.IRepository;
 using PracticeProject.Models;
 using PracticeProject_DOTNET.DataAccess.Data;
 
-namespace PracticeProject_DOTNET.Controllers
+namespace PracticeProject_DOTNET.Areas.Admin.Controllers
 {
+    [Area("Admin")]
     public class CategoryController : Controller
     {
 
