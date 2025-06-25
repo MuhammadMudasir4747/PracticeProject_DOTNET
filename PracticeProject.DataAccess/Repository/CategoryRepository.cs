@@ -12,8 +12,8 @@ namespace PracticeProject.DataAccess.Repository
 {
     public class CategoryRepository : Repository<Category>, ICategoryRespository
     {
-        private ApplicationDbContext _db;
-        public CategoryRepository(ApplicationDbContext db) : base (db) 
+        private MyNewDbContext _db;
+        public CategoryRepository(MyNewDbContext db) : base (db) 
         {
             _db = db;   
         }
