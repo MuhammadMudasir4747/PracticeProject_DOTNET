@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace PracticeProject.DataAccess.Repository
 {
-    public class ProductRepository : Repository<Product>, IProductRespository
+    public class ProductRepository : Repository<Product>, IProductRepository
 
     {
         private MyNewDbContext _db;

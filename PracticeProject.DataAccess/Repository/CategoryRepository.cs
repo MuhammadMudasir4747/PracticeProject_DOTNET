@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace PracticeProject.DataAccess.Repository
 {
-    public class CategoryRepository : Repository<Category>, ICategoryRespository
+    public class CategoryRepository : Repository<Category>, ICategoryRepository
     {
         private MyNewDbContext _db;
         public CategoryRepository(MyNewDbContext db) : base (db) 

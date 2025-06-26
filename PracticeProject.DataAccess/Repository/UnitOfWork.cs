@@ -13,9 +13,11 @@ namespace PracticeProject.DataAccess.Repository
     {
 
         private MyNewDbContext _db;
-        public ICategoryRespository Category { get; private set; }
+        public ICategoryRepository Category { get; private set; }
 
-        public IProductRespository Product {  get; private set; }
+        public IProductRepository Product {  get; private set; }
+
+        
 
         public UnitOfWork(MyNewDbContext db) 
         {
@@ -28,7 +30,7 @@ namespace PracticeProject.DataAccess.Repository
 
         public void Save()
         {
-             _db.SaveChanges();
+            _db.SaveChanges();
         }
     }
 }

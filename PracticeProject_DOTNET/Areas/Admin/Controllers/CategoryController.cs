@@ -36,24 +36,25 @@ namespace PracticeProject_DOTNET.Areas.Admin.Controllers
             return RedirectToAction("Index", "Category");
         }
 
-       
+
         //Edit --- Get
         public IActionResult Edit(int? id)
         {
-            if(id == null || id == 0)
+            if (id == null || id == 0)
             {
                 return NotFound();
             }
 
-            var CategoryfromDb = _unitOfWork.Category.Get(c => c.Id == id);
-
-            if(CategoryfromDb == null) {
-                return NotFound();    
+            var productFromDb = _unitOfWork.Product.Get(p => p.Id == id);
+            if (productFromDb == null)
+            {
+                return NotFound();
             }
 
-
-            return View(CategoryfromDb);
+            return View(productFromDb);
         }
+
+
 
         // EDIT - POST ✅ YOU NEEDED THIS PART
         [HttpPost]
@@ -64,13 +65,13 @@ namespace PracticeProject_DOTNET.Areas.Admin.Controllers
                 _unitOfWork.Category.Update(category);
                 _unitOfWork.Save();
                 TempData["success"] = "Category updated Successfully";
-                return RedirectToAction("Index", "Category");
+                return RedirectToAction("Index", "Product");
 
                 
             }
 
             //return View(category); // show validation messages
-            return RedirectToAction("Index", "Category");
+            return RedirectToAction("Index", "Product");
         }
 
         //Delete method

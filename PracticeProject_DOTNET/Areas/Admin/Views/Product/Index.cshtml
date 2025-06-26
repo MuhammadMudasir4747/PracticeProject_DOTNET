@@ -1,0 +1,82 @@
+﻿@using PracticeProject.Models
+@model List<Product>
+
+
+@if (TempData["success"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show mt-3" role="alert">
+        @TempData["success"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+
+<div class="container">
+
+        <div class="row">
+
+            <div class="col-md-6">
+
+            <h2 class="mt-3 text-center">Categories list</h2>
+
+            <table class="table table-bordered table-striped text-center">
+
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>ISBN</th>
+                        <th>Price</th>
+                        <th>Author</th>
+                        <th>Category</th>
+                        
+                        <th></th>
+                    </tr>
+                    <tr>
+                </thead>
+                <tbody>
+                    @foreach (var obj in Model)
+                    {
+                        <tr>
+                            <td>@obj.Title</td>
+                            <td>@obj.ISBN</td>
+                            <td>@obj.Price</td>
+                            <td>@obj.Author</td>
+                            <td></td>
+                            <td>
+                                <div class="w-75 btn-group" role="group">
+                                    <a asp-controller="Product" asp-action="Edit" asp-route-id="@obj.Id" class="btn btn-primary mx-2">
+                                        <i class="bi bi-pen"></i>
+                                    </a>
+
+                                    <a asp-controller="Product" asp-action="Delete" asp-route-id="@obj.Id" class="btn btn-danger mx-2">
+                                        <i class="bi bi-trash"></i>
+                                    </a>
+                                </div>
+                            </td>
+
+                        </tr>
+                    }
+                </tbody>
+
+
+
+            </table>
+
+            </div>
+
+
+        <div class="col-md-6 text-end mt-3">
+            <a asp-controller="Product" asp-action="Create" class="btn btn-primary">
+                Create New Product <i class="bi bi-plus-lg"></i>
+
+            </a>
+
+
+        </div>
+
+
+
+
+        </div>
+
+</div>

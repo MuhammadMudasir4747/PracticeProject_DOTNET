@@ -1,16 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using PracticeProject.DataAccess.Repository.IRepository;
 
 namespace PracticeProject.DataAccess.Repository.IRepository
 {
     public interface IUnitOfWork
     {
-        ICategoryRespository Category { get; }
-        IProductRespository Product { get; }
-
+        ICategoryRepository Category { get; }
+        IProductRepository Product { get; }
         void Save();
     }
 }

@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace PracticeProject.DataAccess.Repository.IRepository
 {
-    public interface ICategoryRespository : IRepository<Category>
+    public interface IProductRepository : IRepository<Product>
     {
-        void Update(Category obj);
+        void Update(Product obj);
        
        
     }
