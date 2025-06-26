@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PracticeProject.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,11 +7,10 @@ using System.Threading.Tasks;
 
 namespace PracticeProject.DataAccess.Repository.IRepository
 {
-    public interface IUnitOfWork
+    public interface IProductRespository : IRepository<Product>
     {
-        ICategoryRespository Category { get; }
-        IProductRespository Product { get; }
-
-        void Save();
+        void Update(Product obj);
+       
+       
     }
 }

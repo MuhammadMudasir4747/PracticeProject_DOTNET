@@ -14,17 +14,21 @@ namespace PracticeProject.DataAccess.Repository
 
         private MyNewDbContext _db;
         public ICategoryRespository Category { get; private set; }
+
+        public IProductRespository Product {  get; private set; }
+
         public UnitOfWork(MyNewDbContext db) 
         {
             _db = db;
             Category = new CategoryRepository(_db);
-        }
 
-        
+            Product = new ProductRepository(_db);   
+
+        }
 
         public void Save()
         {
-            _db.SaveChanges();
+             _db.SaveChanges();
         }
     }
 }
