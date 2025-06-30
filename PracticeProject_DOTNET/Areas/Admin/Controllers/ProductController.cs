@@ -34,6 +34,25 @@ namespace PracticeProject_DOTNET.Areas.Admin.Controllers
             }
             return RedirectToAction("Index", "Product");
         }
+
+
+        //Get Edit
+        public IActionResult Edit(int? id)
+        {
+            if(id == null || id == 0)
+            {
+                return NotFound();
+            }
+            var productFromDb = _unitOfWork.Product.Get(p => p.Id == id);
+            if (productFromDb == null)
+            {
+                return NotFound();
+            }
+
+            return View(productFromDb);
+        }
+
+
         // EDIT - POST ✅ YOU NEEDED THIS PART
         [HttpPost]
         public IActionResult Edit(Product product) {
