@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using PracticeProject.DataAccess.Repository.IRepository;
 using PracticeProject.Models;
 using PracticeProject_DOTNET.DataAccess.Data;
+using System.Collections.Generic;
 
 
 
@@ -20,6 +22,11 @@ namespace PracticeProject_DOTNET.Areas.Admin.Controllers
         public IActionResult Index()
         {
             List<Product> objProductList = _unitOfWork.Product.GetAll().ToList();
+            IEnumerable<SelectListItem> CAtegoryList = _unitOfWork.Category.GetAll().Select(u => new SelectListItem
+            {
+                Text = u.Name,
+                Value = u.Id.ToString(),
+            });
             return View(objProductList);
         }
         public IActionResult Create() { 
