@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc.Rendering;
 using PracticeProject.DataAccess.Repository.IRepository;
 using PracticeProject.Models;
+using PracticeProject.Models.ViewModels;
 using PracticeProject_DOTNET.DataAccess.Data;
 using System.Collections.Generic;
 
@@ -27,19 +28,23 @@ namespace PracticeProject_DOTNET.Areas.Admin.Controllers
         }
         public IActionResult Create() {
 
-            IEnumerable<SelectListItem> CategoryList = _unitOfWork.Category.GetAll().Select(u => new SelectListItem
+
+            ProductVM productVM = new()
             {
-                Text = u.Name,
-                Value = u.Id.ToString(),
-            });
-            //ViewBag.CategoryList = CategoryList;
-            ViewData    ["CategoryList"] = CategoryList;
-            return View();
+                CategoryList = _unitOfWork.Category.GetAll().Select(u => new SelectListItem
+                {
+                    Text = u.Name,
+                    Value = u.Id.ToString(),
+                }),
+                Product = new Product()
+            };
+
+            return View(productVM);
         }
         [HttpPost]
-        public IActionResult Create(Product product) {
+        public IActionResult Create(ProductVM obj) {
             if (ModelState.IsValid) { 
-            _unitOfWork.Product.Add(product);
+            _unitOfWork.Product.Add(obj.Product);
                 _unitOfWork.Save();
                 TempData["success"] = "Product Created  Successfully";
             }
