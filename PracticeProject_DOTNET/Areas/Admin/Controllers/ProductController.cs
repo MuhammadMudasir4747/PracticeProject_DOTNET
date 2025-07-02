@@ -26,7 +26,7 @@ namespace PracticeProject_DOTNET.Areas.Admin.Controllers
          
             return View(objProductList);
         }
-        public IActionResult Create() {
+        public IActionResult Upsert(int? id) {
 
 
             ProductVM productVM = new()
@@ -38,65 +38,55 @@ namespace PracticeProject_DOTNET.Areas.Admin.Controllers
                 }),
                 Product = new Product()
             };
-
-            return View(productVM);
+            if (id == null || id==0)
+            {
+                //create
+                return View(productVM);
+            }
+            else
+            {
+                //update
+                productVM.Product = _unitOfWork.Product.Get(u => u.Id == id);
+                return View(productVM);
+            }
+            
         }
         [HttpPost]
-        public IActionResult Create(ProductVM productVM) {
+        [HttpPost]
+        public IActionResult Upsert(ProductVM productVM, IFormFile? file)
+        {
             if (ModelState.IsValid)
             {
-                _unitOfWork.Product.Add(productVM.Product);
+                if (productVM.Product.Id == 0)
+                {
+                    // New product
+                    _unitOfWork.Product.Add(productVM.Product);
+                    TempData["success"] = "Product Created Successfully";
+                }
+                else
+                {
+                    // Existing product
+                    _unitOfWork.Product.Update(productVM.Product);
+                    TempData["success"] = "Product Updated Successfully";
+                }
+
                 _unitOfWork.Save();
-                TempData["success"] = "Product Created  Successfully";
                 return RedirectToAction("Index");
             }
 
-            else
+            // If ModelState is not valid, reload the CategoryList
+            productVM.CategoryList = _unitOfWork.Category.GetAll().Select(u => new SelectListItem
             {
-                productVM.CategoryList = _unitOfWork.Category.GetAll().Select(u => new SelectListItem
-                {
-                    Text = u.Name,
-                    Value = u.Id.ToString(),
-                });
-               
+                Text = u.Name,
+                Value = u.Id.ToString(),
+            });
 
-                return View(productVM);
-            }
-
-                
+            return View(productVM);
         }
 
 
-        //Get Edit
-        public IActionResult Edit(int? id)
-        {
-            if(id == null || id == 0)
-            {
-                return NotFound();
-            }
-            var productFromDb = _unitOfWork.Product.Get(p => p.Id == id);
-            if (productFromDb == null)
-            {
-                return NotFound();
-            }
-
-            return View(productFromDb);
-        }
 
 
-        // EDIT - POST ✅ YOU NEEDED THIS PART
-        [HttpPost]
-        public IActionResult Edit(Product product) {
-            if (ModelState.IsValid) { 
-            _unitOfWork.Product.Update(product);
-                _unitOfWork.Save();
-                TempData["success"] = "Product updated Successfully";
-                return RedirectToAction("Index", "Product");
-            }
-
-            
-            return RedirectToAction("Index", "Product");
-        }
 
         //Delete method
         public IActionResult Delete(int? id)

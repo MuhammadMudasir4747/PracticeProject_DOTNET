@@ -44,7 +44,7 @@
                             <td>@obj.CategoryId</td>
                             <td>
                                 <div class="w-75 btn-group" role="group">
-                                    <a asp-controller="Product" asp-action="Edit" asp-route-id="@obj.Id" class="btn btn-primary mx-2">
+                                    <a asp-controller="Product" asp-action="Upsert" asp-route-id="@obj.Id" class="btn btn-primary mx-2">
                                         <i class="bi bi-pen"></i>
                                     </a>
 
@@ -66,7 +66,7 @@
 
 
         <div class="col-md-6 text-end mt-3">
-            <a asp-controller="Product" asp-action="Create" class="btn btn-primary">
+            <a asp-controller="Product" asp-action="Upsert" class="btn btn-primary">
                 Create New Product <i class="bi bi-plus-lg"></i>
 
             </a>
