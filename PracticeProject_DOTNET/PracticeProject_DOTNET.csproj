@@ -21,5 +21,9 @@
     <ProjectReference Include="..\PracticeProject.DataAccess\PracticeProject.DataAccess.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\images\products\" />
+  </ItemGroup>
+
 </Project>
      

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using PracticeProject.DataAccess.Repository.IRepository;
 using PracticeProject.Models;
@@ -15,11 +16,15 @@ namespace PracticeProject_DOTNET.Areas.Admin.Controllers
     public class ProductController : Controller
     {
         public readonly IUnitOfWork _unitOfWork;
+        private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public ProductController(IUnitOfWork unitOfWork)
+
+        public ProductController(IUnitOfWork unitOfWork, IWebHostEnvironment webHostEnvironment)
         {
-            _unitOfWork = unitOfWork;   
+            _unitOfWork = unitOfWork;
+            _webHostEnvironment = webHostEnvironment;
         }
+
         public IActionResult Index()
         {
             List<Product> objProductList = _unitOfWork.Product.GetAll().ToList();
@@ -52,11 +57,38 @@ namespace PracticeProject_DOTNET.Areas.Admin.Controllers
             
         }
         [HttpPost]
-        [HttpPost]
+      
         public IActionResult Upsert(ProductVM productVM, IFormFile? file)
         {
             if (ModelState.IsValid)
             {
+                string wwwRootPath = _webHostEnvironment.WebRootPath;
+
+                // Upload image if file is not null
+                if (file != null)
+                {
+                    string fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
+                    string productPath = Path.Combine(wwwRootPath, @"images\products");
+
+                    // Create directory if not exists
+                    if (!Directory.Exists(productPath))
+                    {
+                        Directory.CreateDirectory(productPath);
+                    }
+
+                    using (var fileStream = new FileStream(Path.Combine(productPath, fileName), FileMode.Create))
+                    {
+                        file.CopyTo(fileStream);
+                    }
+
+                    // Save relative path to database
+                    productVM.Product.ImageUrl = @"\images\products\" + fileName;
+                }
+
+
+
+
+
                 if (productVM.Product.Id == 0)
                 {
                     // New product
