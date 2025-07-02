@@ -42,13 +42,28 @@ namespace PracticeProject_DOTNET.Areas.Admin.Controllers
             return View(productVM);
         }
         [HttpPost]
-        public IActionResult Create(ProductVM obj) {
-            if (ModelState.IsValid) { 
-            _unitOfWork.Product.Add(obj.Product);
+        public IActionResult Create(ProductVM productVM) {
+            if (ModelState.IsValid)
+            {
+                _unitOfWork.Product.Add(productVM.Product);
                 _unitOfWork.Save();
                 TempData["success"] = "Product Created  Successfully";
+                return RedirectToAction("Index");
             }
-            return RedirectToAction("Index", "Product");
+
+            else
+            {
+                productVM.CategoryList = _unitOfWork.Category.GetAll().Select(u => new SelectListItem
+                {
+                    Text = u.Name,
+                    Value = u.Id.ToString(),
+                });
+               
+
+                return View(productVM);
+            }
+
+                
         }
 
 
