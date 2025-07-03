@@ -71,10 +71,23 @@
             <span asp-validation-for="Product.CategoryId" class="text-danger"></span>
         </div>
 
+
+
         <div class="mb-3">
             <label asp-for="Product.ImageUrl"></label>
-            <input type="file" name="file" class="form-control" />
+            @if (Model.Product.ImageUrl != null)
+            {
+                <div class="mb-3">
+                    <img src="@Model.Product.ImageUrl" width="150px" style="border-radius:10px;" />
+                </div>
+                <input type="file" name="file" class="form-control" />
+            }
+            else
+            {
+                <input type="file" name="file" class="form-control" />
+            }
 
+            
 
         </div>
 
