@@ -57,56 +57,90 @@ namespace PracticeProject_DOTNET.Areas.Admin.Controllers
             
         }
         [HttpPost]
-      
         public IActionResult Upsert(ProductVM productVM, IFormFile? file)
         {
             if (ModelState.IsValid)
             {
                 string wwwRootPath = _webHostEnvironment.WebRootPath;
 
-                // Upload image if file is not null
-                if (file != null)
-                {
-                    string fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
-                    string productPath = Path.Combine(wwwRootPath, @"images\products");
-
-                    // Create directory if not exists
-                    if (!Directory.Exists(productPath))
-                    {
-                        Directory.CreateDirectory(productPath);
-                    }
-
-                    using (var fileStream = new FileStream(Path.Combine(productPath, fileName), FileMode.Create))
-                    {
-                        file.CopyTo(fileStream);
-                    }
-
-                    // Save relative path to database
-                    productVM.Product.ImageUrl = @"\images\products\" + fileName;
-                }
-
-
-
-
-
                 if (productVM.Product.Id == 0)
                 {
-                    // New product
+                    // ---------- CREATE ----------
+                    if (file != null)
+                    {
+                        string fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
+                        string productPath = Path.Combine(wwwRootPath, @"images\products");
+
+                        if (!Directory.Exists(productPath))
+                        {
+                            Directory.CreateDirectory(productPath);
+                        }
+
+                        using (var fileStream = new FileStream(Path.Combine(productPath, fileName), FileMode.Create))
+                        {
+                            file.CopyTo(fileStream);
+                        }
+
+                        productVM.Product.ImageUrl = @"\images\products\" + fileName;
+                    }
+
                     _unitOfWork.Product.Add(productVM.Product);
                     TempData["success"] = "Product Created Successfully";
                 }
                 else
                 {
-                    // Existing product
-                    _unitOfWork.Product.Update(productVM.Product);
-                    TempData["success"] = "Product Updated Successfully";
+                    // ---------- UPDATE ----------
+                    var productFromDb = _unitOfWork.Product.Get(u => u.Id == productVM.Product.Id);
+
+                    if (productFromDb != null)
+                    {
+                        if (file != null)
+                        {
+                            if (!string.IsNullOrEmpty(productFromDb.ImageUrl))
+                            {
+                                var oldImagePath = Path.Combine(wwwRootPath, productFromDb.ImageUrl.TrimStart('\\'));
+                                if (System.IO.File.Exists(oldImagePath))
+                                {
+                                    System.IO.File.Delete(oldImagePath);
+                                }
+                            }
+
+                            string fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
+                            string productPath = Path.Combine(wwwRootPath, @"images\products");
+
+                            if (!Directory.Exists(productPath))
+                            {
+                                Directory.CreateDirectory(productPath);
+                            }
+
+                            using (var fileStream = new FileStream(Path.Combine(productPath, fileName), FileMode.Create))
+                            {
+                                file.CopyTo(fileStream);
+                            }
+
+                            productFromDb.ImageUrl = @"\images\products\" + fileName;
+                        }
+
+                        // Update all other fields manually
+                        productFromDb.Title = productVM.Product.Title;
+                        productFromDb.Description = productVM.Product.Description;
+                        productFromDb.Author = productVM.Product.Author;
+                        productFromDb.ISBN = productVM.Product.ISBN;
+                        productFromDb.ListPrice = productVM.Product.ListPrice;
+                        productFromDb.Price = productVM.Product.Price;
+                        productFromDb.Price50 = productVM.Product.Price50;
+                        productFromDb.Price100 = productVM.Product.Price100;
+                        productFromDb.CategoryId = productVM.Product.CategoryId;
+
+                        TempData["success"] = "Product Updated Successfully";
+                    }
                 }
 
                 _unitOfWork.Save();
                 return RedirectToAction("Index");
             }
 
-            // If ModelState is not valid, reload the CategoryList
+            // If invalid model state
             productVM.CategoryList = _unitOfWork.Category.GetAll().Select(u => new SelectListItem
             {
                 Text = u.Name,
@@ -115,6 +149,7 @@ namespace PracticeProject_DOTNET.Areas.Admin.Controllers
 
             return View(productVM);
         }
+
 
 
 

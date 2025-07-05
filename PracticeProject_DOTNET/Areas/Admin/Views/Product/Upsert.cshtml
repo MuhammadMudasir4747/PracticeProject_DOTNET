@@ -82,18 +82,26 @@
             </div>
 
             <div class="col-md-6">
-                <label asp-for="Product.ImageUrl"></label>
-            @if (Model.Product.ImageUrl != null)
-            {
                 <div class="mb-3">
-                    <img class="m-5" src="@Model.Product.ImageUrl" width="300px" style="border-radius:10px;" />
+                    <label asp-for="Product.ImageUrl"></label>
                 </div>
-                <input type="file" name="file" class="form-control" />
-            }
-            else
-            {
-                <input type="file" name="file" class="form-control" />
-            }
+
+                @if (Model.Product.ImageUrl != null)
+                {
+                    <div class="mb-3">
+                        <img id="imgPreview" class="m-5" src="@Model.Product.ImageUrl" width="300px" style="border-radius:10px;" />
+                    </div>
+                }
+                else
+                {
+                    <div class="mb-3">
+                        <img id="imgPreview" class="m-5" src="#" alt="Preview" style="display:none; width:300px; border-radius:10px;" />
+                    </div>
+                }
+
+                <input type="file" name="file" class="form-control" onchange="previewImage(event)" />
+                <small class="form-text text-muted">Choose a new image to update.</small>
+
             </div>
 
         </div>
@@ -120,3 +128,17 @@
         </div>
     </div>
 </form>
+
+@section Scripts {
+    <script>
+        function previewImage(event) {
+            const reader = new FileReader();
+            reader.onload = function () {
+                const output = document.getElementById('imgPreview');
+                output.src = reader.result;
+                output.style.display = "block";
+            };
+            reader.readAsDataURL(event.target.files[0]);
+        }
+    </script>
+}
