@@ -21,6 +21,8 @@
 <form method="post" enctype="multipart/form-data">
     <input asp-for="Product.Id" hidden />
     <div class="border p-3 mt-4">
+        <div class="row">
+        <div class="col-md-6">
         <div class="row pb-2">
             <h2 class="text-primary">Create Product</h2>
             <hr />
@@ -73,12 +75,18 @@
 
 
 
-        <div class="mb-3">
-            <label asp-for="Product.ImageUrl"></label>
+        
+          
+            
+
+            </div>
+
+            <div class="col-md-6">
+                <label asp-for="Product.ImageUrl"></label>
             @if (Model.Product.ImageUrl != null)
             {
                 <div class="mb-3">
-                    <img src="@Model.Product.ImageUrl" width="150px" style="border-radius:10px;" />
+                    <img class="m-5" src="@Model.Product.ImageUrl" width="300px" style="border-radius:10px;" />
                 </div>
                 <input type="file" name="file" class="form-control" />
             }
@@ -86,10 +94,12 @@
             {
                 <input type="file" name="file" class="form-control" />
             }
-
-            
+            </div>
 
         </div>
+            
+
+       
 
 
 
