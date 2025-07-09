@@ -52,6 +52,20 @@ namespace PracticeProject.DataAccess.Repository
             dbSet.RemoveRange(entity);      
         }
 
-      
+        public IEnumerable<T> GetAll(string includeProperties)
+        {
+            IQueryable<T> query = dbSet;
+
+            if (!string.IsNullOrEmpty(includeProperties))
+            {
+                foreach (var includeProp in includeProperties.Split(',', StringSplitOptions.RemoveEmptyEntries))
+                {
+                    query = query.Include(includeProp); // EF Core Include
+                }
+            }
+
+            return query.ToList();
+        }
+
     }
 }

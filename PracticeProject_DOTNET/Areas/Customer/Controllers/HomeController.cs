@@ -1,22 +1,27 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
+using NuGet.ProjectModel;
+using Optivem.Framework.Core.Domain;
 using PracticeProject.Models;
+using PracticeProject.DataAccess.Repository.IRepository;
+using IUnitOfWork = PracticeProject.DataAccess.Repository.IRepository.IUnitOfWork;
+
+
+
 
 namespace PracticeProject_DOTNET.Areas.Customer.Controllers
 {
     [Area("Customer")]
-    public class HomeController : Controller
-    {
-        private readonly ILogger<HomeController> _logger;
+    public class HomeController(ILogger<HomeController> logger, IUnitOfWork unitOfWork) : Controller
 
-        public HomeController(ILogger<HomeController> logger)
-        {
-            _logger = logger;
-        }
+    {
+        private readonly ILogger<HomeController> _logger = logger;
+        private readonly IUnitOfWork _unitOfWork = unitOfWork;
 
         public IActionResult Index()
         {
-            return View();
+            var productList = _unitOfWork.Product.GetAll(includeProperties:"Category").ToList();
+            return View(productList);
         }
 
         public IActionResult Privacy()

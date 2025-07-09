@@ -14,7 +14,7 @@ namespace PracticeProject.DataAccess.Repository.IRepository
         // which we want to perform operations or rather we want
         //to interact with DbContext
         
-        IEnumerable<T> GetAll(); //retreiving all catgs
+        IEnumerable<T> GetAll(string includeProperties); //retreiving all catgs
         T Get(Expression<Func<T, bool>> filter); //Get individual
         void Add(T entity);
      

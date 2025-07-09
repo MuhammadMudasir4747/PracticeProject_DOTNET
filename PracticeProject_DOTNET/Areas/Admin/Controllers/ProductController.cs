@@ -13,23 +13,15 @@ using System.Collections.Generic;
 namespace PracticeProject_DOTNET.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    public class ProductController : Controller
+    public class ProductController(IUnitOfWork unitOfWork, IWebHostEnvironment webHostEnvironment) : Controller
     {
-        public readonly IUnitOfWork _unitOfWork;
-        private readonly IWebHostEnvironment _webHostEnvironment;
-
-
-        public ProductController(IUnitOfWork unitOfWork, IWebHostEnvironment webHostEnvironment)
-        {
-            _unitOfWork = unitOfWork;
-            _webHostEnvironment = webHostEnvironment;
-        }
+        public readonly IUnitOfWork _unitOfWork = unitOfWork;
+        private readonly IWebHostEnvironment _webHostEnvironment = webHostEnvironment;
 
         public IActionResult Index()
         {
-            List<Product> objProductList = _unitOfWork.Product.GetAll().ToList();
-         
-            return View(objProductList);
+            var productList = _unitOfWork.Product.GetAll(includeProperties: "Category").ToList();
+            return View(productList);
         }
         public IActionResult Upsert(int? id) {
 
