@@ -33,12 +33,8 @@ namespace PracticeProject.DataAccess.Repository
            dbSet.Remove(entity);
         }
 
-        public T Get(Expression<Func<T, bool>> filter)
-        {
-            IQueryable<T> query = dbSet;
-            query= query.Where(filter);
-            return query.FirstOrDefault();
-        }
+     
+
 
         public IEnumerable<T> GetAll()
         {
@@ -66,6 +62,27 @@ namespace PracticeProject.DataAccess.Repository
 
             return query.ToList();
         }
+
+        public T Get(Expression<Func<T, bool>> filter, string includeProperties)
+        {
+            IQueryable<T> query = dbSet;
+
+            if (filter != null)
+            {
+                query = query.Where(filter);
+            }
+
+            if (!string.IsNullOrEmpty(includeProperties))
+            {
+                foreach (var includeProp in includeProperties.Split(',', StringSplitOptions.RemoveEmptyEntries))
+                {
+                    query = query.Include(includeProp);
+                }
+            }
+
+            return query.FirstOrDefault();
+        }
+
 
     }
 }

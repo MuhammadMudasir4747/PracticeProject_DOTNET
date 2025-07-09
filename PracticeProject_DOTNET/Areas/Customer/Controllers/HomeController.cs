@@ -20,8 +20,19 @@ namespace PracticeProject_DOTNET.Areas.Customer.Controllers
 
         public IActionResult Index()
         {
-            var productList = _unitOfWork.Product.GetAll(includeProperties:"Category").ToList();
+            IEnumerable <Product> productList = _unitOfWork.Product.GetAll(includeProperties: "Category").ToList();
+
             return View(productList);
+        }
+
+        public IActionResult Details(int id)
+        {
+            var Product = _unitOfWork.Product.Get(u=> u.Id == id ,includeProperties: "Category");
+            if(Product == null)
+            {
+                return NotFound();
+            }
+            return View(Product);
         }
 
         public IActionResult Privacy()

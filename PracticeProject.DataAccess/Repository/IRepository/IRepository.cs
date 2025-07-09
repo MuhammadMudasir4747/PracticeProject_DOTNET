@@ -1,4 +1,4 @@
-﻿using System;
+﻿
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -15,7 +15,7 @@ namespace PracticeProject.DataAccess.Repository.IRepository
         //to interact with DbContext
         
         IEnumerable<T> GetAll(string includeProperties); //retreiving all catgs
-        T Get(Expression<Func<T, bool>> filter); //Get individual
+        T Get(Expression<Func<T, bool>> filter, string includeProperties); //Get individual
         void Add(T entity);
      
         void Remove(T entity);

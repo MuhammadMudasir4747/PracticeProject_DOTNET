@@ -17,7 +17,11 @@ namespace PracticeProject.DataAccess.Repository
         {
             _db = db;   
         }
-      
+
+        public Category Get(Func<Category, bool> value)
+        {
+            throw new NotImplementedException();
+        }
 
         public void Update(Category obj)
         {

@@ -18,7 +18,11 @@ namespace PracticeProject.DataAccess.Repository
         {
             _db = db;   
         }
-      
+
+        public Product Get(Func<Product, bool> value)
+        {
+            throw new NotImplementedException();
+        }
 
         public void Update(Product obj)
         {
