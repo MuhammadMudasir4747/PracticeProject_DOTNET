@@ -2,21 +2,54 @@
     ViewData["Title"] = "Login";
 }
 
-<h2>Login</h2>
+<div class="container mt-5 d-flex justify-content-center align-items-center" style="min-height: 70vh;">
+    <div class="card shadow-lg p-4 rounded" style="width: 100%; max-width: 400px;">
+        <h3 class="text-center mb-4 text-primary">Login to Your Account</h3>
 
-<form asp-action="Login" method="post">
-    <div>
-        <label>Name:</label>
-        <input name="name" required />
-    </div>
-    <div>
-        <label>Password:</label>
-        <input name="password" type="password" required />
-    </div>
-    <button type="submit">Login</button>
-</form>
+        <form asp-action="Login" method="post">
+            <div class="mb-3">
+                <label for="Name" class="form-label">Name</label>
+                <div class="input-group">
+                    <span class="input-group-text"><i class="bi bi-person-fill"></i></span>
+                    <input type="text" class="form-control" id="name" name="name" required>
+                </div>
+            </div>
 
-@if (ViewBag.Error != null)
-{
-    <p style="color:red">@ViewBag.Error</p>
-}
+            <div class="mb-3">
+                <label for="Password" class="form-label">Password</label>
+                <div class="input-group">
+                    <span class="input-group-text"><i class="bi bi-lock-fill"></i></span>
+                    <input type="password" class="form-control" id="password" name="password" required>
+
+                </div>
+            </div>
+
+            <!-- Role Dropdown -->
+            <div class="mb-3">
+                <label for="role" class="form-label">Login As</label>
+                <select class="form-select" id="role" name="role" required>
+                    <option value="Customer">Customer</option>
+                    <option value="Admin">Admin</option>
+                </select>
+            </div>
+
+
+            <div class="d-grid mb-3">
+                <button type="submit" class="btn btn-primary">
+                    <i class="bi bi-box-arrow-in-right"></i> Login
+                </button>
+            </div>
+            @if (ViewBag.Error != null)
+            {
+                <div class="alert alert-danger text-center mt-3">
+                    @ViewBag.Error
+                </div>
+            }
+
+
+            <div class="text-center">
+                <span>Don't have an account? <a asp-action="Signup" asp-controller="Account" asp-area="Customer">Signup</a></span>
+            </div>
+        </form>
+    </div>
+</div>

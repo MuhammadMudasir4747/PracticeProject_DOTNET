@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Hosting;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using PracticeProject.DataAccess.Repository.IRepository;
@@ -13,6 +14,7 @@ using System.Collections.Generic;
 namespace PracticeProject_DOTNET.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = "Admin")]  // Only allow Admin role
     public class ProductController(IUnitOfWork unitOfWork, IWebHostEnvironment webHostEnvironment) : Controller
     {
         public readonly IUnitOfWork _unitOfWork = unitOfWork;

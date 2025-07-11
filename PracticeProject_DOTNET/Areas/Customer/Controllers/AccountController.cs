@@ -1,8 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Http; // Required for HttpContext.Session
+using Microsoft.AspNetCore.Http; // For session
 using PracticeProject_DOTNET.DataAccess.Data;
 using PracticeProject.Models;
 using System.Linq;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication;
+using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace PracticeProject_DOTNET.Areas.Customer.Controllers
 {
@@ -17,6 +21,7 @@ namespace PracticeProject_DOTNET.Areas.Customer.Controllers
         }
 
         // GET: Login page
+        [HttpGet]
         public IActionResult Login()
         {
             return View();
@@ -24,8 +29,29 @@ namespace PracticeProject_DOTNET.Areas.Customer.Controllers
 
         // POST: Login logic
         [HttpPost]
-        public IActionResult Login(string name, string password)
+        public async Task<IActionResult> Login(string name, string password)
         {
+            // ✅ 1. Check hardcoded admin first
+            if (name == "adminuser" && password == "admin123")
+            {
+                var claims = new List<Claim>
+        {
+            new Claim(ClaimTypes.Name, "adminuser"),
+            new Claim(ClaimTypes.Role, "Admin")
+        };
+
+                var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+                var principal = new ClaimsPrincipal(identity);
+
+                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
+
+                HttpContext.Session.SetString("UserId", "0"); // 0 = dummy ID
+                HttpContext.Session.SetString("UserRole", "Admin");
+
+                return RedirectToAction("Index", "Product", new { area = "Admin" });
+            }
+
+            // ✅ 2. Check in database
             var user = _db.ApplicationUsers
                 .FirstOrDefault(u => u.Name == name && u.Password == password);
 
@@ -35,11 +61,20 @@ namespace PracticeProject_DOTNET.Areas.Customer.Controllers
                 return View();
             }
 
-            // Store user info in session
+            var claimsDb = new List<Claim>
+    {
+        new Claim(ClaimTypes.Name, user.Name),
+        new Claim(ClaimTypes.Role, user.Role)
+    };
+
+            var identityDb = new ClaimsIdentity(claimsDb, CookieAuthenticationDefaults.AuthenticationScheme);
+            var principalDb = new ClaimsPrincipal(identityDb);
+
+            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principalDb);
+
             HttpContext.Session.SetString("UserId", user.Id.ToString());
             HttpContext.Session.SetString("UserRole", user.Role);
 
-            // Redirect based on role
             if (user.Role == "Admin")
             {
                 return RedirectToAction("Index", "Product", new { area = "Admin" });
@@ -50,7 +85,9 @@ namespace PracticeProject_DOTNET.Areas.Customer.Controllers
             }
         }
 
+
         // GET: Signup page
+        [HttpGet]
         public IActionResult Signup()
         {
             return View();
@@ -77,9 +114,10 @@ namespace PracticeProject_DOTNET.Areas.Customer.Controllers
             return RedirectToAction("Index", "Home", new { area = "Customer" });
         }
 
-        // Logout action
-        public IActionResult Logout()
+        // ✅ Corrected Logout with SignOut
+        public async Task<IActionResult> Logout()
         {
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             HttpContext.Session.Clear();
             return RedirectToAction("Login");
         }

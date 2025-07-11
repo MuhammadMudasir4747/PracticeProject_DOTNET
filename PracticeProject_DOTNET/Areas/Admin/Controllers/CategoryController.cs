@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using PracticeProject.DataAccess.Repository.IRepository;
 using PracticeProject.Models;
 using PracticeProject_DOTNET.DataAccess.Data;
@@ -6,6 +7,7 @@ using PracticeProject_DOTNET.DataAccess.Data;
 namespace PracticeProject_DOTNET.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = "Admin")]  // Only allow Admin role
     public class CategoryController : Controller
     {
 
